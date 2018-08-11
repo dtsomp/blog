@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Keys were pressed.</title><link href="https://blog.dtsomp.net/" rel="alternate"></link><link href="https://blog.dtsomp.net/https://blog.dtsomp.net" rel="self"></link><id>https://blog.dtsomp.net/</id><updated>2018-08-11T00:00:00+02:00</updated><entry><title>Hello world</title><link href="https://blog.dtsomp.net/hello-world.html" rel="alternate"></link><published>2018-08-11T00:00:00+02:00</published><updated>2018-08-11T00:00:00+02:00</updated><author><name>dtsomp</name></author><id>tag:blog.dtsomp.net,2018-08-11:/hello-world.html</id><summary type="html">&lt;p&gt;Every blog needs a first post.&lt;/p&gt;</summary><content type="html">&lt;p&gt;My personal blog has not been updated for so long, it might as well be dead.
+With that in mind, I've decided to try out something new and go for a custom domain and a new blog engine.&lt;/p&gt;
+&lt;p&gt;If you're reading this, then you already know the new domain :)&lt;/p&gt;
+&lt;p&gt;To get the blog up and running, I've opted for &lt;a href="https://blog.getpelican.com/"&gt;Pelican&lt;/a&gt;, a Python-based static site generator.
+I think that static pages are a perfect fit for blogs and I really, really, REALLY wanted to move away the Blogger platform.
+The choice of engine itself is a bit random, I don't really have any experience of static site generators, so I just picked one that seemed to fit the bill.
+It's part of the whole experiment, really.&lt;/p&gt;
+&lt;p&gt;I'll attempt to host this on &lt;a href="https://pages.github.com/"&gt;Github Pages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;On the plus side, I get to use Vim to edit posts. &lt;/p&gt;
+&lt;p&gt;Here's hoping things work out.&lt;/p&gt;</content></entry></feed>

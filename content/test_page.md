@@ -15,4 +15,6 @@ It's part of the whole experiment, really.
 
 I'll attempt to host this on [Github Pages](https://pages.github.com/).
 
+On the plus side, I get to use Vim to edit posts. 
+
 Here's hoping things work out.
