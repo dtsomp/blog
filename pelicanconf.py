@@ -40,4 +40,4 @@ DEFAULT_PAGINATION = False
 # pelican-clean-blog theme
 HEADER_COVER = 'images/terminal.png'
 
-DISQUS_SITENAME = 'blog-dtsomp-net.disqus.com'
+DISQUS_SITENAME = 'blog-dtsomp-net'
