@@ -31,7 +31,8 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('You can modify those links in your config file', '#'),)
 
 # Social widget
-SOCIAL = (('Twitter', 'https://twitter.com/dtsomp'),)
+SOCIAL = (('RSS feed', 'https://blog.dtsomp.net/feeds/all.rss.xml'),
+            ('Twitter', 'https://twitter.com/dtsomp'),)
 
 DEFAULT_PAGINATION = False
 
