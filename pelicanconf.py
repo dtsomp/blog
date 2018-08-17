@@ -37,7 +37,7 @@ SOCIAL = (('RSS feed', 'https://blog.dtsomp.net/feeds/all.rss.xml'),
 DEFAULT_PAGINATION = False
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 # pelican-clean-blog theme
 HEADER_COVER = 'images/terminal.png'
