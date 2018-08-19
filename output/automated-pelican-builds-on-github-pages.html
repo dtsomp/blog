@@ -7,11 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>Hello world</title>
+        <title>Automated Pelican builds on Github Pages</title>
 
             <link href="https://blog.dtsomp.net/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Full RSS Feed" />
-            <link href="https://blog.dtsomp.net/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="dtsomp's blog Categories Atom Feed" />
-            <link href="https://blog.dtsomp.net/feeds/misc.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Categories RSS Feed" />
+            <link href="https://blog.dtsomp.net/feeds/2018.atom.xml" type="application/atom+xml" rel="alternate" title="dtsomp's blog Categories Atom Feed" />
+            <link href="https://blog.dtsomp.net/feeds/2018.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Categories RSS Feed" />
         <!-- Bootstrap Core CSS -->
         <link href="./theme/css/bootstrap.min.css" rel="stylesheet">
 
@@ -36,7 +36,7 @@
 
 
 
-        <meta name="description" content="Every blog needs a first post.">
+        <meta name="description" content="I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others. However, excuses are...">
 
         <meta name="author" content="dtsomp">
 
@@ -46,15 +46,15 @@
 
 	<meta property="og:type" content="article">
             <meta property="article:author" content="./author/dtsomp.html">
-	<meta property="og:url" content="./hello-world.html">
-	<meta property="og:title" content="Hello world">
-	<meta property="article:published_time" content="2018-08-11 00:00:00+02:00">
-            <meta property="og:description" content="Every blog needs a first post.">
+	<meta property="og:url" content="./automated-pelican-builds-on-github-pages.html">
+	<meta property="og:title" content="Automated Pelican builds on Github Pages">
+	<meta property="article:published_time" content="2018-08-18 00:00:00+02:00">
+            <meta property="og:description" content="I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others. However, excuses are...">
 
             <meta property="og:image" content="./images/terminal.png">
 </head>
 
-<body class="article-hello-world">
+<body class="article-automated-pelican-builds-on-github-pages">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -88,10 +88,10 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Hello world</h1>
+                        <h1>Automated Pelican builds on Github Pages</h1>
                         <span class="meta">Posted by
                                 <a href="./author/dtsomp.html">dtsomp</a>
-                             on Sat 11 August 2018
+                             on Sat 18 August 2018
                         </span>
                         
                     </div>
@@ -106,16 +106,58 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p>My personal blog has not been updated for so long, it might as well be dead.
-With that in mind, I've decided to try out something new and go for a custom domain and a new blog engine.</p>
-<p>If you're reading this, then you already know the new domain :)</p>
-<p>To get the blog up and running, I've opted for <a href="https://blog.getpelican.com/">Pelican</a>, a Python-based static site generator.
-I think that static pages are a perfect fit for blogs and I really, really, REALLY wanted to move away the Blogger platform.
-The choice of engine itself is a bit random, I don't really have any experience of static site generators, so I just picked one that seemed to fit the bill.
-It's part of the whole experiment, really.</p>
-<p>I'll attempt to host this on <a href="https://pages.github.com/">Github Pages</a>.</p>
-<p>On the plus side, I get to use Vim to edit posts. </p>
-<p>Here's hoping things work out.</p>
+        <p>I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others.
+However, excuses are needed to try out new stuff, so I set up this blog on <a href="https://pages.github.com/">Github Pages</a>.</p>
+<p>Github Pages (GhP in short) is a fancy name for repositories marked for HTML hosting.
+Even free accounts get one, so go ahead and create a new repository called <code>username.github.io</code>, replacing <code>username</code> with your Github username.
+E.g. in my case my GhP repo is called <a href="https://github.com/dtsomp/dtsomp.github.io">dtsomp.github.io</a>.</p>
+<p>Just add an <code>index.html</code>, commit and push to it.
+Congratulations, your new website is avaiable on https://username.github.io.</p>
+<p>Now for the really interesting stuff.</p>
+<p>I couldn't create decent-looking HTML pages to save my life and this is why I'm toying around with <a href="https://blog.getpelican.com/">Pelican</a> for generating my blog pages.
+I could use Pelican's (rather under-documented) publish functionality to push my content to GhP or just copy-paste the generated HTML files into my local copy of the repo and commit-push.</p>
+<p>Or I could have <a href="https://travis-ci.com/">Travis CI</a> do this for me.</p>
+<p>So here's the setup:</p>
+<ul>
+<li>a GhP repo for hosting the final HTML files.</li>
+<li>a Github token for commiting to this repo.</li>
+<li>a <a href="https://github.com/dtsomp/blog">source repo</a> which tracks the original Pelican project directory of the blog, containing source files, publishing configuration etc.</li>
+<li>Travis CI triggering builds after every push to the source repo and using the token to update the GhP repo.</li>
+</ul>
+<p>The instructions below are in no way intended to serve as notes for my absent-minded self. No sir. Nuh-uh.</p>
+<p>First step, create the repository for your blog's source code. 
+Add all of your code, then add the following files at the root of the directory:</p>
+<ul>
+<li><a href="https://github.com/dtsomp/blog/blob/master/requirements.txt">requirements.txt</a>, contains the Python modules required by Pelican for generating the HTML pages.</li>
+<li><a href="https://github.com/dtsomp/blog/blob/master/.travis.yml">.travis.yml</a>, contains the steps that Travis needs to take.</li>
+<li><a href="https://github.com/dtsomp/blog/blob/master/deploy.sh">deploy.sh</a> is the script called in the last step of <code>.travis.yml</code>, it copies the generated HTML files to the GhP repo.</li>
+</ul>
+<p>Important: make sure you update <code>TARGET_REPO</code> in <code>deploy.sh</code>.</p>
+<p>Regarding the token, you can generate it in your Github's profile <a href="https://github.com/settings/tokens">personal access tokens page</a>.
+Click on "<em>Generate new token</em>", add a description (something like "blog-ci-token") and I would advise enabling only the following scopes:</p>
+<ul>
+<li>repo:status</li>
+<li>repo_deployment</li>
+<li>public_repo</li>
+</ul>
+<p>Once it's generated, you'll get a long string, e.g. "73e3b4e29bd10e3af8f4c3b9cb0f949622f07e24".
+Copy it, you'll need it later on.
+(I should point out that this is a random string, not an actual token of mine :P)</p>
+<p>Now go to <a href="https://travis-ci.com">https://travis-ci.com</a> and hook it up to your Github account. 
+The requirement here is that Travis is enabled for the repository that contains the blog source.</p>
+<p>The repo will show up in your Travis CI profile. Hit the Settings button for it.</p>
+<p><img alt="travis ci profile" src="/images/2018/travis-ci-profile.png"></p>
+<p>Scroll down to Enviromental Variables, add a new one named "GITHUB_TOKEN" and use the token string as value. 
+"Display value in build log" should OFF.
+You could use a different name instead of GITHUB_TOKEN, just make sure that <code>deploy.sh</code> is updated accordingly.</p>
+<p>At this point, you <em>should</em> be ready to go. 
+Pushing to your source repo should trigger a Travis build, generate the HTML content and push it to your page repo.</p>
+<p>That's it!</p>
+<p><s>Sites where I stole content from</s> <strong>References</strong>:</p>
+<ul>
+<li><a href="https://serge-m.github.io/set-up-travis-ci-for-building-personal-page-on-github-pages-with-pelican.html">Set up Travis CI for building personal page on Github Pages with Pelican</a></li>
+<li><a href="https://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html">How to automatically build your Pelican blog and publish it to Github Pages</a></li>
+</ul>
     </article>
 
 
@@ -126,8 +168,8 @@ It's part of the whole experiment, really.</p>
             <div id="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'blog-dtsomp-net';
-                var disqus_identifier = 'hello-world.html';
-                var disqus_url = './hello-world.html';
+                var disqus_identifier = 'automated-pelican-builds-on-github-pages.html';
+                var disqus_url = './automated-pelican-builds-on-github-pages.html';
                 (function() {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//blog-dtsomp-net.disqus.com/embed.js';

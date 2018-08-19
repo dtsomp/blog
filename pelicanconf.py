@@ -32,7 +32,8 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 
 # Social widget
 SOCIAL = (('RSS feed', 'https://blog.dtsomp.net/feeds/all.rss.xml'),
-            ('Twitter', 'https://twitter.com/dtsomp'),)
+            ('Twitter', 'https://twitter.com/dtsomp'),
+            ('Keybase', 'https://keybase.io/dtsomp'),)
 
 DEFAULT_PAGINATION = False
 

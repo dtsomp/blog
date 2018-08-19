@@ -3,9 +3,6 @@ BRANCH=master
 TARGET_REPO=dtsomp/dtsomp.github.io
 PELICAN_OUTPUT_FOLDER=output
 
-echo -e "Testing travis-encrypt"
-echo -e "$VARNAME"
-
 if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     echo -e "Starting to deploy to Github Pages\n"
     if [ "$TRAVIS" == "true" ]; then
