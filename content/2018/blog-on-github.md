@@ -1,5 +1,5 @@
 Title: Automated Pelican builds on Github Pages
-Author: dtsomp
+Authors: dtsomp
 Date: 2018-08-18
 
 I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others.

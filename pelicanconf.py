@@ -43,4 +43,4 @@ RELATIVE_URLS = True
 # pelican-clean-blog theme
 HEADER_COVER = 'images/terminal.png'
 
-DISQUS_SITENAME = 'blog-dtsomp-net'
+DISQUS_SITENAME = 'dtsomps-blog'
