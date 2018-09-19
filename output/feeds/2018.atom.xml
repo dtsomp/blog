@@ -1,5 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>dtsomp's blog - 2018</title><link href="https://blog.dtsomp.net/" rel="alternate"></link><link href="https://blog.dtsomp.net/feeds/2018.atom.xml" rel="self"></link><id>https://blog.dtsomp.net/</id><updated>2018-08-18T00:00:00+02:00</updated><entry><title>Automated Pelican builds on Github Pages</title><link href="https://blog.dtsomp.net/automated-pelican-builds-on-github-pages.html" rel="alternate"></link><published>2018-08-18T00:00:00+02:00</published><updated>2018-08-18T00:00:00+02:00</updated><author><name>dtsomp</name></author><id>tag:blog.dtsomp.net,2018-08-18:/automated-pelican-builds-on-github-pages.html</id><summary type="html">&lt;p&gt;I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>dtsomp's blog - 2018</title><link href="https://blog.dtsomp.net/" rel="alternate"></link><link href="https://blog.dtsomp.net/feeds/2018.atom.xml" rel="self"></link><id>https://blog.dtsomp.net/</id><updated>2018-09-19T00:00:00+02:00</updated><entry><title>Distributing certificates with Hiera</title><link href="https://blog.dtsomp.net/distributing-certificates-with-hiera.html" rel="alternate"></link><published>2018-09-19T00:00:00+02:00</published><updated>2018-09-19T00:00:00+02:00</updated><author><name>dtsomp</name></author><id>tag:blog.dtsomp.net,2018-09-19:/distributing-certificates-with-hiera.html</id><summary type="html">&lt;h2&gt;Short intro&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://puppet.com/docs/puppet/5.3/hiera_intro.html"&gt;Hiera&lt;/a&gt; is what you should use to get data into Puppet's variables. &lt;a href="https://puppet.com/blog/encrypt-your-data-using-hiera-eyaml"&gt;Hiera-eyaml&lt;/a&gt; is what you should use to make sure that data is encrypted when in rest (i.e. committed in a repository).&lt;/p&gt;
+&lt;p&gt;If you don't need to encrypt certificates (or other files) in a repository, then …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;Short intro&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://puppet.com/docs/puppet/5.3/hiera_intro.html"&gt;Hiera&lt;/a&gt; is what you should use to get data into Puppet's variables. &lt;a href="https://puppet.com/blog/encrypt-your-data-using-hiera-eyaml"&gt;Hiera-eyaml&lt;/a&gt; is what you should use to make sure that data is encrypted when in rest (i.e. committed in a repository).&lt;/p&gt;
+&lt;p&gt;If you don't need to encrypt certificates (or other files) in a repository, then this article is not for you.&lt;/p&gt;
+&lt;p&gt;Why would you need to distribute certificates instead of creating them on the hosts themselves?
+There are a couple of reasons. 
+In my case it was a certificate provided by a third-party.
+I am sure there are more use cases for this.&lt;/p&gt;
+&lt;h2&gt;Plain-text certificates&lt;/h2&gt;
+&lt;p&gt;My biggest dislike about Hiera is the way that everything it handles is plain text. I mean, not dislike per se - everybody loves plain text, right? - but there is the issue of distributing files, like certificates.&lt;/p&gt;
+&lt;p&gt;PEM files are fine, they are already plain text. The way to handle them is to encrypt them:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ eyaml encrypt -n gpg --gpg-recipients-file hiera-eyaml-gpg.recipients -f snakeoil.pem
+
+string: ENC&lt;span class="o"&gt;[&lt;/span&gt;GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7...
+
+OR
+block: &amp;gt;
+    ENC&lt;span class="o"&gt;[&lt;/span&gt;GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ....
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and then append one of the two forms to your eyaml file. The block format is usually sliiiiightly more readable.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cert::snakeoil_pem: &amp;gt;
+ENC[GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then you can recreate the file on the Puppet host.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;# puppet
+file{&amp;#39;snakeoil.pem&amp;#39;:
+    content =&amp;gt; looukup(&amp;#39;cert::snakeoil_pem&amp;#39;)
+    ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is not an elegant solution. If you use &lt;code&gt;hiera-eyaml-gpg&lt;/code&gt; (like we do), this text block is going to get huge.&lt;/p&gt;
+&lt;h2&gt;Binary certificates&lt;/h2&gt;
+&lt;p&gt;If, however, you have to deal with a binary format (eg .p12), then there's an extra problem to deal with. &lt;code&gt;hiera-eyaml&lt;/code&gt; et al seem to handle binary files pretty well. 
+Hiera on the other hand seems to throw a hissy fit when it comes to reading variables containing binary.&lt;/p&gt;
+&lt;p&gt;When in doubt, &lt;code&gt;base64&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ base64 snakeoil.p12 &lt;span class="p"&gt;|&lt;/span&gt; eyaml encrypt -n gpg --gpg-recipients hiera-eyaml-gpg.recipients --stdin
+
+string: ENC&lt;span class="o"&gt;[&lt;/span&gt;GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wy...
+
+OR
+block: &amp;gt;
+    ENC&lt;span class="o"&gt;[&lt;/span&gt;GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ....
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Insert in your eyaml file as usual. When it's time to retrieve the certificate, don't forget to Base64-decode it.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;file{&amp;#39;snakeoil_p12&amp;#39;:
+    content =&amp;gt; base64(&amp;#39;decode&amp;#39;, looukup(&amp;#39;cert::snakeoil_p12&amp;#39;))
+    ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That's not fun by any standard, but it works.&lt;/p&gt;</content></entry><entry><title>Automated Pelican builds on Github Pages</title><link href="https://blog.dtsomp.net/automated-pelican-builds-on-github-pages.html" rel="alternate"></link><published>2018-08-18T00:00:00+02:00</published><updated>2018-08-18T00:00:00+02:00</updated><author><name>dtsomp</name></author><id>tag:blog.dtsomp.net,2018-08-18:/automated-pelican-builds-on-github-pages.html</id><summary type="html">&lt;p&gt;I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others.
 However, excuses are needed to try out new stuff, so I set up this blog on &lt;a href="https://pages.github.com/"&gt;Github Pages&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Github Pages (GhP in short) is a fancy name for repositories …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I am not a huge user of Github, mainly because there is very little code I feel comfortable sharing with others.
 However, excuses are needed to try out new stuff, so I set up this blog on &lt;a href="https://pages.github.com/"&gt;Github Pages&lt;/a&gt;.&lt;/p&gt;

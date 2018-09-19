@@ -7,11 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-        <title>Hello world</title>
+        <title>Distributing certificates with Hiera</title>
 
             <link href="https://blog.dtsomp.net/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Full RSS Feed" />
-            <link href="https://blog.dtsomp.net/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="dtsomp's blog Categories Atom Feed" />
-            <link href="https://blog.dtsomp.net/feeds/misc.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Categories RSS Feed" />
+            <link href="https://blog.dtsomp.net/feeds/2018.atom.xml" type="application/atom+xml" rel="alternate" title="dtsomp's blog Categories Atom Feed" />
+            <link href="https://blog.dtsomp.net/feeds/2018.rss.xml" type="application/rss+xml" rel="alternate" title="dtsomp's blog Categories RSS Feed" />
         <!-- Bootstrap Core CSS -->
         <link href="https://blog.dtsomp.net/theme/css/bootstrap.min.css" rel="stylesheet">
 
@@ -36,7 +36,7 @@
 
 
 
-        <meta name="description" content="Every blog needs a first post.">
+        <meta name="description" content="Short intro Hiera is what you should use to get data into Puppet's variables. Hiera-eyaml is what you should use to make sure that data...">
 
         <meta name="author" content="dtsomp">
 
@@ -46,15 +46,15 @@
 
 	<meta property="og:type" content="article">
             <meta property="article:author" content="https://blog.dtsomp.net/author/dtsomp.html">
-	<meta property="og:url" content="https://blog.dtsomp.net/hello-world.html">
-	<meta property="og:title" content="Hello world">
-	<meta property="article:published_time" content="2018-08-11 00:00:00+02:00">
-            <meta property="og:description" content="Every blog needs a first post.">
+	<meta property="og:url" content="https://blog.dtsomp.net/distributing-certificates-with-hiera.html">
+	<meta property="og:title" content="Distributing certificates with Hiera">
+	<meta property="article:published_time" content="2018-09-19 00:00:00+02:00">
+            <meta property="og:description" content="Short intro Hiera is what you should use to get data into Puppet's variables. Hiera-eyaml is what you should use to make sure that data...">
 
             <meta property="og:image" content="https://blog.dtsomp.net/images/terminal.png">
 </head>
 
-<body class="article-hello-world">
+<body class="article-distributing-certificates-with-hiera">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -88,10 +88,10 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Hello world</h1>
+                        <h1>Distributing certificates with Hiera</h1>
                         <span class="meta">Posted by
                                 <a href="https://blog.dtsomp.net/author/dtsomp.html">dtsomp</a>
-                             on lör 11 augusti 2018
+                             on ons 19 september 2018
                         </span>
                         
                     </div>
@@ -106,16 +106,78 @@
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
     <!-- Post Content -->
     <article>
-        <p>My personal blog has not been updated for so long, it might as well be dead.
-With that in mind, I've decided to try out something new and go for a custom domain and a new blog engine.</p>
-<p>If you're reading this, then you already know the new domain :)</p>
-<p>To get the blog up and running, I've opted for <a href="https://blog.getpelican.com/">Pelican</a>, a Python-based static site generator.
-I think that static pages are a perfect fit for blogs and I really, really, REALLY wanted to move away the Blogger platform.
-The choice of engine itself is a bit random, I don't really have any experience of static site generators, so I just picked one that seemed to fit the bill.
-It's part of the whole experiment, really.</p>
-<p>I'll attempt to host this on <a href="https://pages.github.com/">Github Pages</a>.</p>
-<p>On the plus side, I get to use Vim to edit posts. </p>
-<p>Here's hoping things work out.</p>
+        <h2>Short intro</h2>
+<p><a href="https://puppet.com/docs/puppet/5.3/hiera_intro.html">Hiera</a> is what you should use to get data into Puppet's variables. <a href="https://puppet.com/blog/encrypt-your-data-using-hiera-eyaml">Hiera-eyaml</a> is what you should use to make sure that data is encrypted when in rest (i.e. committed in a repository).</p>
+<p>If you don't need to encrypt certificates (or other files) in a repository, then this article is not for you.</p>
+<p>Why would you need to distribute certificates instead of creating them on the hosts themselves?
+There are a couple of reasons. 
+In my case it was a certificate provided by a third-party.
+I am sure there are more use cases for this.</p>
+<h2>Plain-text certificates</h2>
+<p>My biggest dislike about Hiera is the way that everything it handles is plain text. I mean, not dislike per se - everybody loves plain text, right? - but there is the issue of distributing files, like certificates.</p>
+<p>PEM files are fine, they are already plain text. The way to handle them is to encrypt them:</p>
+<div class="highlight"><pre><span></span>$ eyaml encrypt -n gpg --gpg-recipients-file hiera-eyaml-gpg.recipients -f snakeoil.pem
+
+string: ENC<span class="o">[</span>GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7...
+
+OR
+block: &gt;
+    ENC<span class="o">[</span>GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ....
+</pre></div>
+
+
+<p>and then append one of the two forms to your eyaml file. The block format is usually sliiiiightly more readable.</p>
+<div class="highlight"><pre><span></span>cert::snakeoil_pem: &gt;
+ENC[GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ...
+</pre></div>
+
+
+<p>Then you can recreate the file on the Puppet host.</p>
+<div class="highlight"><pre><span></span># puppet
+file{&#39;snakeoil.pem&#39;:
+    content =&gt; looukup(&#39;cert::snakeoil_pem&#39;)
+    ...
+</pre></div>
+
+
+<p>This is not an elegant solution. If you use <code>hiera-eyaml-gpg</code> (like we do), this text block is going to get huge.</p>
+<h2>Binary certificates</h2>
+<p>If, however, you have to deal with a binary format (eg .p12), then there's an extra problem to deal with. <code>hiera-eyaml</code> et al seem to handle binary files pretty well. 
+Hiera on the other hand seems to throw a hissy fit when it comes to reading variables containing binary.</p>
+<p>When in doubt, <code>base64</code>.</p>
+<div class="highlight"><pre><span></span>$ base64 snakeoil.p12 <span class="p">|</span> eyaml encrypt -n gpg --gpg-recipients hiera-eyaml-gpg.recipients --stdin
+
+string: ENC<span class="o">[</span>GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wy...
+
+OR
+block: &gt;
+    ENC<span class="o">[</span>GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
+    ocKN1/jk5TUTlmURnNz/Da7mMZfMiVGlGBni8MJQer7PTvWApVzo1lHtdQF/
+    WTJvfp9pHOQ5XncYm7DXi8ZJnbQujFAXFzieUnEaavBZBFeNoXuCH92rbnLP
+    f3oKQwEQetH4YEYvUxgmZl1Ww98rBL6m72LNZ+TG6iOM7dIgx2RWWT4Z0//G
+    fNr2Sz3iU2243xtKA6hoRvlJzBOKPBvsoK8iDFd425Wo2gp54fG27fcQMT/I
+    ....
+</pre></div>
+
+
+<p>Insert in your eyaml file as usual. When it's time to retrieve the certificate, don't forget to Base64-decode it.</p>
+<div class="highlight"><pre><span></span>file{&#39;snakeoil_p12&#39;:
+    content =&gt; base64(&#39;decode&#39;, looukup(&#39;cert::snakeoil_p12&#39;))
+    ...
+</pre></div>
+
+
+<p>That's not fun by any standard, but it works.</p>
     </article>
 
 
@@ -126,8 +188,8 @@ It's part of the whole experiment, really.</p>
             <div id="disqus_thread"></div>
             <script type="text/javascript">
                 var disqus_shortname = 'dtsomps-blog';
-                var disqus_identifier = 'hello-world.html';
-                var disqus_url = 'https://blog.dtsomp.net/hello-world.html';
+                var disqus_identifier = 'distributing-certificates-with-hiera.html';
+                var disqus_url = 'https://blog.dtsomp.net/distributing-certificates-with-hiera.html';
                 (function() {
                     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
                     dsq.src = '//dtsomps-blog.disqus.com/embed.js';
