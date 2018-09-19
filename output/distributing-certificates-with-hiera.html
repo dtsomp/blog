@@ -145,7 +145,7 @@ ENC[GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wyYbaaS
 <p>Then you can recreate the file on the Puppet host.</p>
 <div class="highlight"><pre><span></span># puppet
 file{&#39;snakeoil.pem&#39;:
-    content =&gt; looukup(&#39;cert::snakeoil_pem&#39;)
+    content =&gt; lookup(&#39;cert::snakeoil_pem&#39;)
     ...
 </pre></div>
 
@@ -172,7 +172,7 @@ block: &gt;
 
 <p>Insert in your eyaml file as usual. When it's time to retrieve the certificate, don't forget to Base64-decode it.</p>
 <div class="highlight"><pre><span></span>file{&#39;snakeoil_p12&#39;:
-    content =&gt; base64(&#39;decode&#39;, looukup(&#39;cert::snakeoil_p12&#39;))
+    content =&gt; base64(&#39;decode&#39;, lookup(&#39;cert::snakeoil_p12&#39;))
     ...
 </pre></div>
 

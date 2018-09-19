@@ -51,7 +51,7 @@ Then you can recreate the file on the Puppet host.
 ```
 # puppet
 file{'snakeoil.pem':
-	content => looukup('cert::snakeoil_pem')
+	content => lookup('cert::snakeoil_pem')
     ...
 ```
 
@@ -83,7 +83,7 @@ Insert in your eyaml file as usual. When it's time to retrieve the certificate, 
 
 ```
 file{'snakeoil_p12':
-	content => base64('decode', looukup('cert::snakeoil_p12'))
+	content => base64('decode', lookup('cert::snakeoil_p12'))
     ...
 ```
 
