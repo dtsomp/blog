@@ -1,6 +1,6 @@
 Title: Review of the Gemini PDA
 Authors: dtsomp
-Date: 2018-10-22
+Date: 2018-10-28
 Summary: It's huge, it's weird, it has a physical keyboard, it runs Linux. Of course I got one.
 
 I have recently received help to my eternal effort of collecting weird gadgets.
