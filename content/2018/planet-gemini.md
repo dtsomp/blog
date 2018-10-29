@@ -171,7 +171,7 @@ Typing with a rotated keyboard on the left of the screen while in portrait is an
 For the brave ones that plan to use the Gemini as a phone, be warned: there will be a lot of opening/closing the clamshell device.
 There is no screen on the outside of the device, just the notification LEDs.
 Caller ID and proper Android notifications all show up in the big 6" screen, on the inside of the device, which means you'll need to open the device to check every notification.
-Planet ships a LED configurator app with the Gemini, so you can 
+Planet ships a LED configurator app with the Gemini, so you can make your light patterns.
 
 The only way to interact with the device without opening it first is to use the single external button that either activates Google Voice Assistant or answers a call.
 Using a smartwatch as a notification terminal is probably the easiest way around all this fuss.
