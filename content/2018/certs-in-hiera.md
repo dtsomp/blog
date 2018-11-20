@@ -65,7 +65,7 @@ Hiera on the other hand seems to throw a hissy fit when it comes to reading vari
 When in doubt, `base64`.
 
 ```
-$ base64 snakeoil.p12 | eyaml encrypt -n gpg --gpg-recipients hiera-eyaml-gpg.recipients --stdin
+$ base64 snakeoil.p12 | eyaml encrypt -n gpg --gpg-recipients-file hiera-eyaml-gpg.recipients --stdin
 
 string: ENC[GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wy...
 

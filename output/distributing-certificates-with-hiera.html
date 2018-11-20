@@ -155,7 +155,7 @@ file{&#39;snakeoil.pem&#39;:
 <p>If, however, you have to deal with a binary format (eg .p12), then there's an extra problem to deal with. <code>hiera-eyaml</code> et al seem to handle binary files pretty well. 
 Hiera on the other hand seems to throw a hissy fit when it comes to reading variables containing binary.</p>
 <p>When in doubt, <code>base64</code>.</p>
-<div class="highlight"><pre><span></span>$ base64 snakeoil.p12 <span class="p">|</span> eyaml encrypt -n gpg --gpg-recipients hiera-eyaml-gpg.recipients --stdin
+<div class="highlight"><pre><span></span>$ base64 snakeoil.p12 <span class="p">|</span> eyaml encrypt -n gpg --gpg-recipients-file hiera-eyaml-gpg.recipients --stdin
 
 string: ENC<span class="o">[</span>GPG,hQEMAzQwoE+Gwj0aAQf+JbeDfSzWqt+xNP109+w+JENeIBn34D7s7wy...
 
